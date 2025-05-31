@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Form</title>
+    <link rel="stylesheet" href="static/registerUser.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Flash message section, will appear at the top -->
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <div class="flash-message">
+            {% for message in messages %}
+            <div class="alert">
+                {{ message }}
+                <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %} {% endwith %}
+        <div class="form-container">
+            <h2>Create Account</h2>
+            <form class="signup-form" method="POST" action="/addUser">
+                <div class="form-group">
+                    <input type="text" id="fullname" name="fullname" required>
+                    <label for="fullname"><i class="fas fa-user"></i> Full Name</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" id="email" name="email" required>
+                    <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" id="password" name="password" required>
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" id="confirm-password" required>
+                    <label for="confirm-password"><i class="fas fa-lock"></i> Confirm Password</label>
+                </div>
+
+                <button type="submit">Sign Up <i class="fas fa-arrow-right"></i></button>
+            </form>
+
+            <div class="login-link">
+                Already have an account? <a href="/login">Log In</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

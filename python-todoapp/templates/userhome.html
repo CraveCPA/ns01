@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - My Todo List</title>
+    <link rel="stylesheet" href="static/userhome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="todo-header">
+            <h1>Hi {{ username | capitalize}}!!</h1>
+            <a href="/logout" class="btn btn-logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </header>
+
+        <main class="todo-main">
+            <div class="add-task-form">
+                <form method="POST" action="/addtask">
+                    <div class="form-group">
+                        <input type="text" name=task placeholder="Enter new task..." required>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Task
+                        </button>
+                    </div>
+                </form>
+                <!-- Flash message section, will appear at the top -->
+                {% with messages = get_flashed_messages() %} {% if messages %}
+                <div class="flash-message">
+                    {% for message in messages %}
+                    <div class="alert">
+                        {{ message }}
+                        <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %} {% endwith %}
+            </div>
+
+            <div class="task-list">
+                <h2 style="margin-bottom: 20px;"> Your Tasks </h2>
+                <div class="task-filter">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Completed</button>
+                    <button class="filter-btn">Pending</button>
+                </div>
+
+                <ul class="task-items">
+                    <!-- Static Task Items -->
+                    {% for task, status in tasks %} {% if task %}
+                    <li class="task-item TaskItem {{ status | lower }}">
+                        <span class="task-text">{{ task }}</span> {% if status.lower() == 'completed' %}
+                        <span class="completed-status">{{ status }}</span> {% endif %} {% if status.lower() != 'completed' %}
+                        <span class="pending-status">{{ status }}</span>
+                        <form action="/completetask" method="POST" style="display:inline;">
+                            <input type="hidden" name="task" value="{{ task }}">
+                            <button type=submit class="btn-completed">Mark as completed</button>
+                        </form>
+                        {% endif %}
+                        <form action="/deletetask" method="POST" style="display:inline;">
+                            <input type="hidden" name="task" value="{{ task }}">
+                            <button type=submit class="btn-delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </li>
+                    {% endif %} {% endfor %}
+                </ul>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
